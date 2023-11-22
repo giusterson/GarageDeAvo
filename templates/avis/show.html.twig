@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<section class="aviss">
+
+        <article>
+            <h2>{{avis.user.email}} </h2>
+            <div>{{avis.note}} sur 5 </div>
+            
+            <div> {{avis.titre}} </div>
+            <div> {{avis.contenuMessageAvis}}</div>
+        </article>
+       
+
+</section>
+{% endblock %}
