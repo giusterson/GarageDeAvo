@@ -41,9 +41,9 @@ security:
          - { path: ^/reparation, roles: ROLE_USER }
 
     role_hierarchy:
-        ROLE_PRODUCT_ADMIN: ROLE_USER
-        ROLE_ADMIN: ROLE_EMPLOYEE   
-        ROLE_SUPER_ADMIN: ROLE_ADMIN 
+        ROLE_USER: ROLE_USER
+        ROLE_EMPLOYEE: ROLE_EMPLOYEE   
+        ROLE_ADMIN: ROLE_ADMIN 
 
 when@test:
     security:

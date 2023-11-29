@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<section class="aviss">
+        <article>
+            <h2>{{vehicule.libelle}} </h2>
+
+            <div>
+                <img style="max-width: 500px;" src="{{ vich_uploader_asset(vehicule, 'imageFile')}}">
+            </div>
+            <div> Plaque d'immatriculation : {{vehicule.immatriculation}} </div>
+            <div> Prix : {{vehicule.prix}} </div>
+            <div>  Année mise en circulation :{{vehicule.anneeMiseEnCirculation}}</div>
+            <div>Kilométrage :  {{vehicule.kms}}</div>
+            <div> {{vehicule.estDisponible}}</div>
+        </article>
+</section>
+{% endblock %}

@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AvisRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
-
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Avis;
 use App\Form\AvisType;
@@ -34,11 +33,6 @@ class AvisController extends AbstractController
         if (!$avis){
             $avis = new Avis();
        }
-      /*  $form = $this->createFormBuilder($avis)
-        ->add('title')
-        ->add('content')
-        ->add('image')
-        ->getForm(); */
         $form = $this->createForm(AvisType::class, $avis);
 
         $form->handleRequest($request);

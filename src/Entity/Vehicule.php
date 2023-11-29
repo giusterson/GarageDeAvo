@@ -5,7 +5,12 @@ namespace App\Entity;
 use App\Repository\VehiculeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
+
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: VehiculeRepository::class)]
 class Vehicule
 {
@@ -15,16 +20,28 @@ class Vehicule
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom du véhicule ne peut pas être vide !")]
+    #[Assert\Length(
+        min: 5,
+        minMessage: "Le libelle doit comporter au moins 5 caractères !"
+    )]
     private ?string $libelle = null;
+
+    #[Vich\UploadableField(mapping: 'vehicule_images', fileNameProperty: 'imageName')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $imageName = null;
+
 
     #[ORM\Column(length: 100)]
     private ?string $immatriculation = null;
 
     #[ORM\Column]
+    #[Assert\PositiveOrZero(
+        message: "Le prix doit etre superieur à zéro !"
+    )]
     private ?int $prix = null;
-
-    #[ORM\Column(type: Types::BLOB)]
-    private $image = null;
 
     #[ORM\Column]
     private ?int $anneeMiseEnCirculation = null;
@@ -52,6 +69,33 @@ class Vehicule
         return $this;
     }
 
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        /* if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+           // $this->updatedAt = new \DateTimeImmutable();
+        } */
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+
     public function getImmatriculation(): ?string
     {
         return $this->immatriculation;
@@ -76,18 +120,7 @@ class Vehicule
         return $this;
     }
 
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    public function setImage($image): static
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
+    
     public function getAnneeMiseEnCirculation(): ?int
     {
         return $this->anneeMiseEnCirculation;

@@ -6,7 +6,11 @@
     <section class="container">
         <div class="row">
             <div class="col">
-                    <h1>Inscription</h1>
+                {% if isAdminMode %}
+                    <h1>Créer un compte d'employé</h1>
+                {% else %}
+                    <h1>Créer un compte </h1>
+                {% endif %}    
 
                     {{ form_start(registrationForm) }}
                     <fieldset class="mb-3">
@@ -27,7 +31,11 @@
                         }) }}
                         {{ form_row(registrationForm.RGPDConsent) }}
 
-                        <button type="submit" class="btn btn-primary btn-lg my-3">M'inscrire</button>
+                         {% if isAdminMode %}
+                             <button type="submit" class="btn btn-primary btn-lg my-3">Créer un compte d'employé</button>
+                         {% else %}
+                             <button type="submit" class="btn btn-primary btn-lg my-3">Créer un compte </button>
+                         {% endif %}    
                     {{ form_end(registrationForm) }}
             </div>
         </div>

@@ -44,6 +44,45 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'isAdminMode' => false
         ]);
     }
+
+    #[Route('/inscription/employe', name: 'app_register_employe')]
+    public function registerEmployee(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UsersAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    {
+        // On donne l'accès à cette fonctionnalité à l'administrateur uniquement
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $employe = new User();
+        $form = $this->createForm(RegistrationFormType::class, $employe);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $employe->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $employe,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            // On assigne le rôle d'employé à l'utilisateur
+            $employe->setRoles(['ROLE_EMPLOYEE']);
+            $entityManager->persist($employe);
+            $entityManager->flush();
+
+            return $userAuthenticator->authenticateUser(
+                $employe,
+                $authenticator,
+                $request
+            );
+        }
+
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),
+            'isAdminMode' => true
+        ]);
+    }
+
+    
 }
