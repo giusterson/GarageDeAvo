@@ -9,6 +9,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Positive;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class VehiculeType extends AbstractType
 {
@@ -35,6 +37,10 @@ class VehiculeType extends AbstractType
             ->add('anneeMiseEnCirculation')
             ->add('kms')
             ->add('estDisponible')
+            ->add('user', EntityType::class, [
+                'class'=> User::class,
+                'choice_label' => 'email',
+            ])
         ;
     }
 

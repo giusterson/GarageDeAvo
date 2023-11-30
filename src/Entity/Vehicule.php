@@ -52,6 +52,10 @@ class Vehicule
     #[ORM\Column]
     private ?bool $estDisponible = null;
 
+    #[ORM\ManyToOne(inversedBy: 'vehicules')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -158,5 +162,17 @@ class Vehicule
     }
     public function __toString() {
         return $this->libelle;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

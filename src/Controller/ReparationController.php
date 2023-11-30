@@ -69,9 +69,11 @@ class ReparationController extends AbstractController
     }
 
     #[Route('/reparation/delete/{id}', name: 'delete_reparation')]
-    public function delete(EntityManagerInterface $entityManager, int $id): Response
+    public function delete(EntityManagerInterface $entityManager,ReparationRepository $repo, int $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $reparations = $repo->findAll();
+
         $reparation = $entityManager->getRepository(Reparation::class)->find($id);
 
         if (!$reparation) {
@@ -83,7 +85,9 @@ class ReparationController extends AbstractController
         $entityManager->remove($reparation);
 		$entityManager->flush();
 
-        return $this->render('reparation/indexAdmin.html.twig');
+        return $this->render('reparation/indexAdmin.html.twig', [
+            'reparations'=> $reparations
+        ]);
     }
 
     #[Route('/reparation/admin', name: 'admin_reparation')]

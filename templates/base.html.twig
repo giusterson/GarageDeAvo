@@ -125,8 +125,7 @@
                 <p><i class="fas fa-home mr-3"></i> Du lundi au vendredi : 08 :45 – 12 :00, 14 :00 - 18 :00</p>
                 <p><i class="fas fa-envelope mr-3"></i> Samedi : 08 :45 – 12 :00</p>
                 <p><i class="fas fa-phone mr-3"></i> Dimanche : fermé </p>
-                
-                {% if isOpen %}
+                {% if isOpen == true %}
                   <p><i class="fas fa-phone mr-3"></i> Le garage est actuellement ouvert. </p>
                 {% else %}
                   <p><i class="fas fa-phone mr-3"></i> Le garage est actuellement fermé. </p>

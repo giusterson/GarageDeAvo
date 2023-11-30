@@ -13,7 +13,7 @@ use App\Repository\VehiculeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Demande;
 use App\Repository\DemandeRepository;
-
+use App\Repository\UserRepository;
 class VehiculeController extends AbstractController
 {
     #[Route('/vehicule', name: 'app_vehicule')]
@@ -22,14 +22,35 @@ class VehiculeController extends AbstractController
         $vehicules = $vehiculeRepository->findAll();
         return $this->render('vehicule/index.html.twig', [
             'controller_name' => 'VehiculeController',
-            'vehicules'=> $vehicules
+            'vehicules'=> $vehicules,
+        ]);
+    }
+
+    #[Route('/vehicule/utilisateur', name: 'app_vehicule_utilisateur')]
+    public function indexUtilisateur(VehiculeRepository $vehiculeRepository, UserRepository $userRepository): Response
+    {
+        $vehicules = $vehiculeRepository->findAll();
+        $users = $userRepository->findAll();
+        return $this->render('vehicule/indexUtilisateur.html.twig', [
+            'controller_name' => 'VehiculeController',
+            'vehicules'=> $vehicules,
+            'users'=> $users
+        ]);
+    }
+    #[Route('/vehicule/show/{id}', name: 'app_vehicule_show')]
+    public function showVehicule(VehiculeRepository $vehiculeRepository, int $id): Response
+    {
+        $vehicule = $vehiculeRepository->find($id);
+        return $this->render('vehicule/show.html.twig', [
+            'controller_name' => 'VehiculeController',
+            'vehicule' => $vehicule
         ]);
     }
 
     #[Route('/vehicule/new', name: 'vehicule_create')]
     public function addVehicule(Request $request, ManagerRegistry $doctrine)
     {
-        $this->denyAccessUnlessGranted('ROLE_EMPLOYEE');
+        // $this->denyAccessUnlessGranted('ROLE_EMPLOYEE');
         $manager = $doctrine->getManager();
         $vehicule = new Vehicule();
         $form = $this->createForm(VehiculeType::class);
@@ -52,7 +73,7 @@ class VehiculeController extends AbstractController
 
     #[Route('/vehicule/edit/{id}', name: 'vehicule_edit')]
     public function editVehicule(Vehicule $vehicule, Request $request, ManagerRegistry $doctrine) {
-         $this->denyAccessUnlessGranted('ROLE_EMPLOYEE');
+        //  $this->denyAccessUnlessGranted('ROLE_EMPLOYEE');
         $manager = $doctrine->getManager();
         $form = $this->createForm(VehiculeType::class, $vehicule);
         $form->handleRequest($request);
@@ -72,9 +93,10 @@ class VehiculeController extends AbstractController
     }
 
     #[Route('/vehicule/delete/{id}', name: 'vehicule_delete')]
-    public function deleteVehicule(EntityManagerInterface $entityManager, DemandeRepository $demandeRepository, int $id)
+    public function deleteVehicule(EntityManagerInterface $entityManager, DemandeRepository $demandeRepository, VehiculeRepository $vehiculeRepository,int $id)
     {
-        $this->denyAccessUnlessGranted('ROLE_EMPLOYEE');
+      //  $this->denyAccessUnlessGranted('ROLE_EMPLOYEE');
+        
        $demandes = $demandeRepository->findAll();
        foreach ($demandes as $demande) {
             if ($demande->getVehicule()->getId() === $id) {
@@ -93,8 +115,10 @@ class VehiculeController extends AbstractController
         }
         $entityManager->remove($vehicule);
         $entityManager->flush();
+        $vehicules = $vehiculeRepository->findAll();
         return $this->render('vehicule/index.html.twig', [
-            'controller_name' => 'VehiculeController'
+            'controller_name' => 'VehiculeController',
+            'vehicules' => $vehicules,
         ]);
                     
     }

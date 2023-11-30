@@ -166,6 +166,7 @@ ul li{
 </style>
     <h1> Liste des véhicules </h1>
 
+	{% for vehicule in vehicules %} 
 		<div class="wrapper">
 			<div class="vehicle-card">
 				<div class="details">      
@@ -185,18 +186,14 @@ ul li{
 							<div style="clear:both;"></div>
 						</div>
 						<div class="desc">
-								<article>
-									<div>
-									</div>
-									<div> Plaque d'immatriculation : {{vehicule.immatriculation}} </div>
-									<div>  Année mise en circulation :{{vehicule.anneeMiseEnCirculation}}</div>
-									<div>Kilométrage :  {{vehicule.kms}}</div>
-									<div> {{vehicule.estDisponible}}</div>
-								</article>
+							<p>Coordonnées :</p>
+							<p>Nom : {{ vehicule.user.firstname }} {{ vehicule.user.lastname }} </p>
+							<p>Mail : {{ vehicule.user.email }} </p>
 						</div>
 					</div>
 				</div>
 		</div>
+	{% endfor %}
 
   
 {% endblock %}
