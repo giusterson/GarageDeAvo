@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Data\SearchDataTest;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use App\Entity\Vehicule;
 use App\Repository\VehiculeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Demande;
+use App\Form\SearchFormType;
 use App\Repository\DemandeRepository;
 use App\Repository\UserRepository;
 class VehiculeController extends AbstractController
@@ -19,6 +21,7 @@ class VehiculeController extends AbstractController
     #[Route('/vehicule', name: 'app_vehicule')]
     public function index(VehiculeRepository $vehiculeRepository): Response
     {
+        // Pour les employés, on affiche tous les véhicules : disponibles ou non disponibles.
         $vehicules = $vehiculeRepository->findAll();
         return $this->render('vehicule/index.html.twig', [
             'controller_name' => 'VehiculeController',
@@ -27,14 +30,31 @@ class VehiculeController extends AbstractController
     }
 
     #[Route('/vehicule/utilisateur', name: 'app_vehicule_utilisateur')]
-    public function indexUtilisateur(VehiculeRepository $vehiculeRepository, UserRepository $userRepository): Response
+    public function indexUtilisateur(VehiculeRepository $vehiculeRepository, UserRepository $userRepository, Request $request): Response
     {
-        $vehicules = $vehiculeRepository->findAll();
+        // On affiche à l'utilisateur les véhicules seulement disponibles.
+         $vehicules = $vehiculeRepository->findBy(
+            ['estDisponible' => 'true'],
+        ); 
+
+        // On va chercher le numéro de page dans l'url
+       // $page = $request->query->getInt('page', 1);
+
+       // $vehicules = $vehiculeRepository->findVehiculePaginated($page, 6);
+
+        $data = new SearchDataTest();
+        $data-> page =  $request->get('page', 1 );
+        $form = $this->createForm(SearchFormType::class, $data); 
+        $form->handleRequest($request);
+        $vehicules = $vehiculeRepository->findSearch($data);
+        // dd($vehicules);
+        // On récupère tous les users car certains possèdent des véhicules
         $users = $userRepository->findAll();
         return $this->render('vehicule/indexUtilisateur.html.twig', [
             'controller_name' => 'VehiculeController',
             'vehicules'=> $vehicules,
-            'users'=> $users
+            'users'=> $users,
+            'form' => $form->createView()
         ]);
     }
     #[Route('/vehicule/show/{id}', name: 'app_vehicule_show')]

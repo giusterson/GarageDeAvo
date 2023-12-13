@@ -94,10 +94,8 @@ class ReparationController extends AbstractController
     public function adminReparation(ReparationRepository $repo): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $reparations = $repo->findAll();
-        $isGarageOpen = true;
         return $this->render('reparation/indexAdmin.html.twig', [
-            'reparations'=> $reparations,
-            'isGarageOpen' => $isGarageOpen
+            'reparations'=> $reparations
         ]);
     }
     

@@ -2,9 +2,13 @@
 
 namespace App\Repository;
 
+use App\Data\SearchDataTest;
 use App\Entity\Vehicule;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Vehicule>
@@ -16,9 +20,86 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class VehiculeRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Vehicule::class);
+        $this->paginator = $paginator;
+    }
+
+    public function findVehiculePaginated(int $page, int $limit = 6): array 
+    {
+        // On veut que limit soit une valeur positive
+        $limit = abs($limit);
+        $result = [];
+
+        // Créons la requête qui va chercher les infos d'un véhicule.
+        $query = $this->getEntityManager()->createQueryBuilder()
+        ->select('v')
+        ->from(Vehicule::class,'v')
+        ->setMaxResults($limit)
+        ->setFirstResult(($page * $limit) - $limit);
+        
+        $paginator = new Paginator($query);
+        $data = $paginator->getQuery()->getResult();
+        // On vérifie qu'on a des données 
+        if (empty($data)) {
+            return $result;
+        }  
+        // On calcule le nombre de pages
+        // Exemple : J'ai 5 véhicules pour une limite de 3. 5/3 = 1.66 donc on va arrondir 1.66 (avec ceil) à 2. -> 2 pages.
+        $pages = ceil($paginator->count() / $limit);
+
+        // On remplit le tableau
+        $result['data'] = $data;
+        $result['pages'] = $pages;
+        $result['page'] = $page;
+        $result['limit'] = $limit;
+        return $result;
+    }
+
+    public function findSearch(SearchDataTest $search) : PaginationInterface
+    {
+        $query = $this
+        ->createQueryBuilder('v');
+
+        if (!empty($search->minPrice)) {
+            $query = $query 
+            ->andWhere('v.prix >= :minPrice')
+            ->setParameter('minPrice',$search->minPrice);
+        }
+        if (!empty($search->maxPrice)) {
+            $query = $query 
+            ->andWhere('v.prix <= :maxPrice')
+            ->setParameter('maxPrice',$search->maxPrice);
+        }
+        if (!empty($search->minKms)) {
+            $query = $query 
+            ->andWhere('v.kms >= :minKms')
+            ->setParameter('minKms',$search->minKms);
+        }
+        if (!empty($search->maxKms)) {
+            $query = $query 
+            ->andWhere('v.kms <= :maxKms')
+            ->setParameter('maxKms',$search->maxKms);
+        }
+
+        if (!empty($search->minYear)) {
+            $query = $query 
+            ->andWhere('v.anneeMiseEnCirculation >= :minYear')
+            ->setParameter('minYear',$search->minYear);
+        }
+        if (!empty($search->maxYear)) {
+            $query = $query 
+            ->andWhere('v.anneeMiseEnCirculation <= :maxYear')
+            ->setParameter('maxYear', $search->maxYear);
+        }
+         $query = $query->getQuery();
+         return $this->paginator->paginate(
+            $query,
+            $search->page,
+            6
+         );
+
     }
 
 //    /**

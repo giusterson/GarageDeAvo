@@ -4,13 +4,26 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
        <link rel="stylesheet" href="https://bootswatch.com/5/darkly/bootstrap.min.css">
-        {% block stylesheets %}
-        {% endblock %}
+            
+            {% block stylesheets %}
+                  {{ encore_entry_link_tags('app') }}
+            {% endblock %}
 
-        {% block javascripts %}
-        {% endblock %}
+            {% block javascripts %}
+                {{ encore_entry_script_tags('app') }}
+
+                <!-- Renders app.js & a webpack runtime.js file
+                    <script src="/build/runtime.js" defer></script>
+                    <script src="/build/app.js" defer></script>
+                    See note below about the "defer" attribute -->
+            {% endblock %}
+              
     </head>
+       
+     
+   
     <body>
+
 <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Garage Vincent Parrot</a>
@@ -125,11 +138,12 @@
                 <p><i class="fas fa-home mr-3"></i> Du lundi au vendredi : 08 :45 – 12 :00, 14 :00 - 18 :00</p>
                 <p><i class="fas fa-envelope mr-3"></i> Samedi : 08 :45 – 12 :00</p>
                 <p><i class="fas fa-phone mr-3"></i> Dimanche : fermé </p>
-                {% if isOpen == true %}
-                  <p><i class="fas fa-phone mr-3"></i> Le garage est actuellement ouvert. </p>
+               
+               {% if etat.isOpen == true %}
+                  <p><i class="fas fa-phone mr-3"></i> Le garage est actuellement ouvert . </p>
                 {% else %}
                   <p><i class="fas fa-phone mr-3"></i> Le garage est actuellement fermé. </p>
-                {% endif %}
+                {% endif %} 
 
            
           </div>

@@ -142,8 +142,8 @@ ul li{
   font-size: .75rem;
   font-family: "Helvetica", Arial, sans-serif;
   text-decoration: none;
-  height: 30px;
-  width: 100px;
+  height: 40px;
+  width: 150px;
   text-align: center;
   border-radius: 2px;
   font-weight: bold;  
@@ -161,43 +161,35 @@ ul li{
   background-color: #fff;
   color: #1383b3;
   border: 2px solid #1383b3;  
-  line-height: 26px;
 }
 </style>
-    <h1> Liste des véhicules </h1>
-
-		<div class="wrapper">
-			<div class="vehicle-card">
-				<div class="details">      
-			<div class="thumb-gallery">
-				<img class="first" src="{{ vich_uploader_asset(vehicule, 'imageFile')}}">
-			</div>
-					<div class="info">
-						<h3> {{ vehicule.libelle }} </h3>
-						
-						<div class="price">
-							<span>Prix du véhicule :</span>
-							<h4>{{ vehicule.prix }} €</h4>
-						</div>
-						<div class="ctas">
-							<a href="/vehicule/show/{{ vehicule.id }}" class="btn primary"> Détails</a>
-							<a href="#" class="btn secondary"> Contacter  </a>
-							<div style="clear:both;"></div>
-						</div>
-						<div class="desc">
-								<article>
-									<div>
-									</div>
-									<div> Plaque d'immatriculation : {{vehicule.immatriculation}} </div>
-									<div>  Année mise en circulation :{{vehicule.anneeMiseEnCirculation}}</div>
-									<div>Kilométrage :  {{vehicule.kms}}</div>
-									<div> {{vehicule.estDisponible}}</div>
-								</article>
-						</div>
-					</div>
-				</div>
-		</div>
-
+    <h1> Description du véhicule </h1>
+   <div class="wrapper" style="color: black;">
+              <div class="vehicle-card">
+                <div class="details">      
+                  <div class="thumb-gallery">
+                    <img class="first" src="{{ vich_uploader_asset(vehicule, 'imageFile')}}">
+                  </div>
+                  <div class="info">
+                        <h3 style="margin-top: 30px;"> {{ vehicule.libelle }} </h3>
+                        <div class="price">
+                            <span>Prix :</span>
+                            <h4>{{ vehicule.prix }} €</h4>
+                        </div>
+                        <div class="ctas">
+                          <a href="#" class="btn secondary"> Contacter le propriétaire   </a>
+                          <div style="clear:both;"></div>
+                        </div>
+                        <div class="desc">
+                          <p> Plaque d'immatriculation : {{vehicule.immatriculation}} </p>
+                          <p style="font-weight: bold;">Coordonnées :</p>
+                          <p>Nom : {{ vehicule.user.firstname }} {{ vehicule.user.lastname }} </p>
+                          <p>Mail : {{ vehicule.user.email }} </p>
+                        </div>
+                   </div> 
+                </div>
+              </div>
+    </div>
   
 {% endblock %}
 

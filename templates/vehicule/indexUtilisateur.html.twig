@@ -16,16 +16,16 @@ ul li{
   padding: 0;
   list-style: none;
 }
-.wrapper{
+.container{
   width: 840px;
   margin: 0 auto;
-  height: 1200px;
+  height: 1000px;
 }
 .vehicle-card{
   position: relative;
   display: inline-block;
   width: 240px;  
-  height: 335px;
+  height: 300px;
   overflow: visible;
   z-index: 1;
   border-radius: 2px;
@@ -56,7 +56,7 @@ ul li{
   -webkit-transition: all .3s cubic-bezier(0.165, 0.84, 0.44, 1);
   transition: all .3s cubic-bezier(0.165, 0.84, 0.44, 1);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-  height: 490px;
+  height: 440px;
   width: 240px;
 }
 .vehicle-card .info{
@@ -109,32 +109,7 @@ ul li{
   font-size: 1rem;
   line-height: 1.25rem;
 }
-.vehicle-card .specs{
-  border-top: 1px solid #dadada;
-  border-bottom: 1px solid #dadada;
-  margin: 20px 0;
-  padding: 10px 0;  
-}
-.specs .spec{
-  display: inline-block;
-  margin-right: 10px;
-}
-.specs span{
-  font-family: "Helvetica", Arial, sans-serif;
-  color: #999;
-  font-size: .75rem;
-}
-.specs p{
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 1rem;
-  font-weight: bold;
-  margin: 0;
-}
-.specs p span{
-  font-size: .75rem;
-  margin-left: 2px;
-  font-weight: normal;
-}
+
 .btn{
   display: block;
   padding: 0 10px;
@@ -162,40 +137,74 @@ ul li{
   color: #1383b3;
   border: 2px solid #1383b3;  
   line-height: 26px;
+
 }
+
+.pagination {
+  margin-top: 80px;
+} 
+
+.filter {
+  display: block;
+  position: sticky;
+  top: 20px;
+}
+
 </style>
     <h1> Liste des véhicules </h1>
 
-	{% for vehicule in vehicules %} 
-		<div class="wrapper">
-			<div class="vehicle-card">
-				<div class="details">      
-			<div class="thumb-gallery">
-				<img class="first" src="{{ vich_uploader_asset(vehicule, 'imageFile')}}">
-			</div>
-					<div class="info">
-						<h3> {{ vehicule.libelle }} </h3>
-						
-						<div class="price">
-							<span>Prix du véhicule :</span>
-							<h4>{{ vehicule.prix }} €</h4>
-						</div>
-						<div class="ctas">
-							<a href="/vehicule/show/{{ vehicule.id }}" class="btn primary"> Détails</a>
-							<a href="#" class="btn secondary"> Contacter  </a>
-							<div style="clear:both;"></div>
-						</div>
-						<div class="desc">
-							<p>Coordonnées :</p>
-							<p>Nom : {{ vehicule.user.firstname }} {{ vehicule.user.lastname }} </p>
-							<p>Mail : {{ vehicule.user.email }} </p>
-						</div>
-					</div>
-				</div>
-		</div>
-	{% endfor %}
-
-  
+  <div class="container js-filter" style="color: black;">
+      <div class="row">
+              <div class="filter col-md-3">
+                  {% include 'vehicule/_filter.html.twig' with {form: form} only %}
+              </div>
+              <div class="col-md-9">
+                                  <div class="grid">
+                                        {% for vehicule in vehicules %} 
+                                            <div class="vehicle-card">
+                                              <div class="details">      
+                                                <div class="thumb-gallery">
+                                                  <img class="first" src="{{ vich_uploader_asset(vehicule, 'imageFile')}}">
+                                                </div>
+                                                <div class="info">
+                                                      <h3 style="margin-top: 30px;"> {{ vehicule.libelle }} </h3>
+                                                      <div class="price">
+                                                          <span>Prix :</span>
+                                                          <h4 class="text-primary">{{ vehicule.prix }} €</h4>
+                                                      </div>
+                                                      <div class="ctas">
+                                                        <a href="/vehicule/show/{{ vehicule.id }}" class="btn primary"> Détails</a>
+                                                        <a href="#" class="btn secondary"> Contacter  </a>
+                                                        <div style="clear:both;"></div>
+                                                      </div>
+                                                      <div class="desc">
+                                                        <p style="font-weight: bold;">Infos :</p>
+                                                        <p> Année de mise en circulation : {{ vehicule.anneeMiseEnCirculation }} </p>
+                                                        <p> Kilométrage : {{ vehicule.kms }} km </p>
+                                                      </div>
+                                                </div> 
+                                              </div>
+                                            </div>
+                                        {% endfor %}
+                                        {# <div class="pagination js-filter-pagination">
+                                            {% set path = 'app_vehicule_utilisateur' %} 
+                                            {% set pages = vehicules.pages %}
+                                            {% set currentPage = vehicules.page %}
+                                            {% include "_partials/_pagination.html.twig" %}
+                                        </div> #}
+                                         <div class="js-filter-content"></div>
+                                        <div class="js-filter-pagination"></div>
+                                        <div class="js-filter-sorting"></div>
+                                        <div class="js-filter-form"></div> 
+                                  </div>
+                                  <div style="mt-4">
+                                        {{ knp_pagination_render(vehicules) }}
+                                  </div>
+              </div>
+            </div>
+      </div>
+  </div>
+   
 {% endblock %}
 
 
