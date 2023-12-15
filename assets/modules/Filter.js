@@ -18,7 +18,7 @@ export default class Filter {
 
             return
         }
-        console.log('toto');
+        console.log('je me construis');
         this.pagination = element.querySelector('.js-filter-pagination');
         this.content = element.querySelector('.js-filter-content');
         this.sorting = element.querySelector('.js-filter-sorting');

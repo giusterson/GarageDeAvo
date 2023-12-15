@@ -3,19 +3,19 @@ import './styles/app.css';
 import Filter from './modules/Filter';
 new Filter(document.querySelector('.js-filter'));
  
-console.log('bonjour Avo');
+console.log('app.js fonctionne !'); 
 import noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 
 var priceSlider = document.getElementById('price-slider');
 var kmsSlider = document.getElementById('kms-slider');
 var yearSlider = document.getElementById('year-slider');
-console.log('priceslider :' + priceSlider);
+// console.log('priceslider :' + priceSlider);
 
 if (priceSlider) {
     const minPrice = document.getElementById('minPrice');
     const maxPrice = document.getElementById('maxPrice');
-    console.log('prix min : ' + priceSlider.dataset.minPrice);
+    // console.log('prix min : ' + priceSlider.dataset.minPrice);
     const range = noUiSlider.create(priceSlider, {
         start: [minPrice.value || 1000 , maxPrice.value || 10000],
         connect: true,
