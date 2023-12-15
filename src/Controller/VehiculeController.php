@@ -43,9 +43,13 @@ class VehiculeController extends AbstractController
        // $vehicules = $vehiculeRepository->findVehiculePaginated($page, 6);
 
         $data = new SearchDataTest();
-        $data-> page =  $request->get('page', 1 );
+        $data-> page =  $request->get('page', 1);
         $form = $this->createForm(SearchFormType::class, $data); 
         $form->handleRequest($request);
+        [$minPrice, $maxPrice] = $vehiculeRepository->findMinMaxPrice($data);
+        [$minKms, $maxKms] = $vehiculeRepository->findMinMaxKms($data);
+        [$minYear, $maxYear] = $vehiculeRepository->findMinMaxYear($data);
+
         $vehicules = $vehiculeRepository->findSearch($data);
         // dd($vehicules);
         // On récupère tous les users car certains possèdent des véhicules
@@ -54,7 +58,13 @@ class VehiculeController extends AbstractController
             'controller_name' => 'VehiculeController',
             'vehicules'=> $vehicules,
             'users'=> $users,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'minPrice' => $minPrice,
+            'maxPrice' => $maxPrice,
+            'minKms' => $minKms,
+            'maxKms' => $maxKms,
+            'minYear' => $minYear,
+            'maxYear' => $maxYear,
         ]);
     }
     #[Route('/vehicule/show/{id}', name: 'app_vehicule_show')]

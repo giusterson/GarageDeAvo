@@ -156,7 +156,7 @@ ul li{
   <div class="container js-filter" style="color: black;">
       <div class="row">
               <div class="filter col-md-3">
-                  {% include 'vehicule/_filter.html.twig' with {form: form} only %}
+                  {% include 'vehicule/_filter.html.twig' with {form: form, minPrice: minPrice, maxPrice: maxPrice, minKms: minKms, maxKms: maxKms, minYear: minYear, maxYear: maxYear} only %}
               </div>
               <div class="col-md-9">
                                   <div class="grid">

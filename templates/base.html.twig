@@ -17,9 +17,13 @@
                     <script src="/build/app.js" defer></script>
                     See note below about the "defer" attribute -->
             {% endblock %}
-              
+
+            {# {{ encore_entry_link_tags('app') }}
+            {{ encore_entry_script_tags('app') | replace('src=', 'defer src=') | raw}} #}     
     </head>
        
+               
+
      
    
     <body>

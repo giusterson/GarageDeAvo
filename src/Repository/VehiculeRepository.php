@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Data\SearchDataTest;
 use App\Entity\Vehicule;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
@@ -59,6 +60,45 @@ class VehiculeRepository extends ServiceEntityRepository
 
     public function findSearch(SearchDataTest $search) : PaginationInterface
     {
+
+        $query = $this->getSearchQuery($search)->getQuery();
+        return $this->paginator->paginate(
+           $query,
+           $search->page,
+           6
+        );
+
+    }
+    public function findMinMaxPrice(SearchDataTest $search) : array
+    {
+        $results = $this->getSearchQuery($search)
+        ->select('MIN(v.prix) as minPrice', 'MAX(v.prix) as maxPrice')
+        ->getQuery()
+        ->getScalarResult();
+        return [(int)$results[0]['minPrice'], (int)$results[0]['maxPrice']];
+    }
+
+    public function findMinMaxKms(SearchDataTest $search) : array
+    {
+        $results = $this->getSearchQuery($search)
+        ->select('MIN(v.kms) as minKms', 'MAX(v.kms) as maxKms')
+        ->getQuery()
+        ->getScalarResult();
+        return [(int)$results[0]['minKms'], (int)$results[0]['maxKms']];
+    }
+
+    
+    public function findMinMaxYear(SearchDataTest $search) : array
+    {
+        $results = $this->getSearchQuery($search)
+        ->select('MIN(v.anneeMiseEnCirculation) as minYear', 'MAX(v.anneeMiseEnCirculation) as maxYear')
+        ->getQuery()
+        ->getScalarResult();
+        return [(int)$results[0]['minYear'], (int)$results[0]['maxYear']];
+    }
+
+    private function getSearchQuery(SearchDataTest $search) : QueryBuilder
+    {
         $query = $this
         ->createQueryBuilder('v');
 
@@ -93,13 +133,8 @@ class VehiculeRepository extends ServiceEntityRepository
             ->andWhere('v.anneeMiseEnCirculation <= :maxYear')
             ->setParameter('maxYear', $search->maxYear);
         }
-         $query = $query->getQuery();
-         return $this->paginator->paginate(
-            $query,
-            $search->page,
-            6
-         );
-
+            
+            return $query;
     }
 
 //    /**
