@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Data\SearchDataTest;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,6 +55,11 @@ class VehiculeController extends AbstractController
         // dd($vehicules);
         // On récupère tous les users car certains possèdent des véhicules
         $users = $userRepository->findAll();
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'content' => $this->renderView('vehicule/_vehicules.html.twig', ['vehicules' => $vehicules])
+            ]);
+        }
         return $this->render('vehicule/indexUtilisateur.html.twig', [
             'controller_name' => 'VehiculeController',
             'vehicules'=> $vehicules,

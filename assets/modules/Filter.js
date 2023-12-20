@@ -35,7 +35,23 @@ export default class Filter {
         this.sorting.querySelectorAll('a').forEach(a => {
             a.addEventListener('click', e => {
                 e.preventDefault()
+                this.loadUrl(a.getAttribute('href'))
             })
         })
     } 
+
+    async loadUrl (url) {
+        const response = await fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        // Condition pour que la requête s'est bien déroulée 
+        if (response.status >= 200 && response.status > 300) {
+            const data = await response.json()
+            this.content.innerHTML = data.content
+        } else {
+            console.error(response)
+        }
+    }
 }
