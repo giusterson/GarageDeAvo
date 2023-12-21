@@ -7,6 +7,8 @@ console.log('app.js fonctionne !');
 import noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 
+
+
 var priceSlider = document.getElementById('price-slider');
 var kmsSlider = document.getElementById('kms-slider');
 var yearSlider = document.getElementById('year-slider');
@@ -39,6 +41,10 @@ if (priceSlider) {
         }
 
     })
+ 
+    range.on('end', function (value, handle) {
+        minPrice.dispatchEvent(new Event('change'))
+    }) 
 }
 
 if (kmsSlider) {
@@ -63,6 +69,9 @@ if (kmsSlider) {
         }
 
     })
+    range.on('end', function (value, handle) {
+        minKms.dispatchEvent(new Event('change'))
+    }) 
 }
 
 if (yearSlider) {
@@ -87,4 +96,8 @@ if (yearSlider) {
         }
 
     })
+
+    range.on('end', function (value, handle) {
+        minYear.dispatchEvent(new Event('change'))
+    }) 
 }

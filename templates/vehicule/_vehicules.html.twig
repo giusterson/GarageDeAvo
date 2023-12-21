@@ -1,0 +1,3 @@
+{% for vehicule in vehicules %}
+    {% include "vehicule/_card.html.twig" with {vehicule: vehicule} only %}
+{% endfor %}

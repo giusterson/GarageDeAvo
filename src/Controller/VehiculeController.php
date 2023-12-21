@@ -48,6 +48,8 @@ class VehiculeController extends AbstractController
         $form = $this->createForm(SearchFormType::class, $data); 
         $form->handleRequest($request);
         [$minPrice, $maxPrice] = $vehiculeRepository->findMinMaxPrice($data);
+      /*   dump("minPrice= " . $minPrice);
+        dump("maxPrice= " . $maxPrice); */
         [$minKms, $maxKms] = $vehiculeRepository->findMinMaxKms($data);
         [$minYear, $maxYear] = $vehiculeRepository->findMinMaxYear($data);
 
@@ -55,14 +57,16 @@ class VehiculeController extends AbstractController
         // dd($vehicules);
         // On récupère tous les users car certains possèdent des véhicules
         $users = $userRepository->findAll();
-        if ($request->isXmlHttpRequest()) {
+        if ($request->get('ajax')) {
             return new JsonResponse([
-                'content' => $this->renderView('vehicule/_vehicules.html.twig', ['vehicules' => $vehicules])
+                'content' => $this->renderView('vehicule/_vehicules.html.twig', ['vehicules' => $vehicules]),
+                'sorting' => $this->renderView('vehicule/_sorting.html.twig', ['vehicules' => $vehicules]),
+                'pagination' => $this->renderView('vehicule/_pagination.html.twig', ['vehicules' => $vehicules])
             ]);
         }
         return $this->render('vehicule/indexUtilisateur.html.twig', [
             'controller_name' => 'VehiculeController',
-            'vehicules'=> $vehicules,
+            'vehicules' => $vehicules,
             'users'=> $users,
             'form' => $form->createView(),
             'minPrice' => $minPrice,

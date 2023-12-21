@@ -1,4 +1,4 @@
-{{ form_start(form, {attr: {class: 'filter'}}) }}
+{{ form_start(form, {attr: {class: 'filter js-filter-form'}}) }}
 
 <h4 style="color: white;"> Prix (en €)</h4>
 <div class="row">
@@ -42,7 +42,7 @@
 
 </div>
 
-<button type="submit" class="btn btn-primary w-100"> Filtrer</button>
+<button class="btn btn-primary w-100"> <a href="{{ path('app_vehicule_utilisateur')}}"> Réinitialiser les filtres </a> </button>
 
 
 {{ form_end(form) }}
