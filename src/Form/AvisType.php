@@ -16,14 +16,14 @@ class AvisType extends AbstractType
     {
         $builder
             ->add('note', ChoiceType::class, [
-                'choices'  => [
-                    '1' => 1,
-                    '2' => 2,
-                    '3' => 3,
-                    '4'=> 4,
-                    '5'=> 5
-                ]
-                ])
+                    'choices' => [
+                        '1' => 1,
+                        '2' => 2,
+                        '3' => 3,
+                        '4'=> 4,
+                        '5'=> 5
+                    ]
+                 ])
                
             ->add('titre')
             ->add('contenuMessageAvis')
@@ -32,7 +32,14 @@ class AvisType extends AbstractType
                 'class' => User::class,
                 'choice_label' => 'email',
                 ])
-        ;
+                ->add('approved', ChoiceType::class, [
+                    'choices' => [
+                        'Oui' => true,
+                        'Non' => false,
+                        
+                    ]
+                 ]);
+            
     }
 
     public function configureOptions(OptionsResolver $resolver): void

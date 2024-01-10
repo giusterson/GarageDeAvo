@@ -17,37 +17,39 @@ class AvisController extends AbstractController
     #[Route('/avis', name: 'app_avis')]
     public function index(AvisRepository $repo): Response
     {
-        $avis = $repo->findAll();
+        
+        $aviss = $repo->findAll();
         return $this->render('avis/index.html.twig', [
             'controller_name' => 'AvisController',
+            'avis' => $aviss
         ]);
     }
+    /*  La méthode create de l'entité Avis est dans ce fichier src/Controller/PageAccueilController.php 
+        Cette méthode devrait être ici-même en temps normal mais l'énoncé du devoir m'a contraint de la mettre dans PageAccueilController.php.
+        De plus, on y retrouve seulement le contenu de la méthode dans la fonction "index" de ce fichier et non pas sa signature.
+    */
 
-    #[Route('/avis/new', name: 'avis_create')]
+
     #[Route('/avis/edit/{id}', name: 'avis_edit')]
-    public function form(Avis $avis = null, Request $request, ManagerRegistry $doctrine) 
-    {
-        // $this->denyAccessUnlessGranted('AVIS_ADD_EDIT', $avis);
-
+    public function editAvis(Avis $avis, Request $request, ManagerRegistry $doctrine) {
         $manager = $doctrine->getManager();
-        if (!$avis){
-            $avis = new Avis();
-       }
         $form = $this->createForm(AvisType::class, $avis);
-
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            
-            $manager->persist($avis);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Récupérons les données du véhicule créé dans le create form.
+            $avisData = $form->getData();
+            $manager->persist($avisData);
             $manager->flush();
             return $this->render('avis/show.html.twig', 
             ['avis' => $avis]);
         }
-        return $this->render('avis/create.html.twig' , [
+        return $this->render('avis/edit.html.twig' , [
             'formAvis' => $form->createView(),
             'isEditMode' => $avis->getId() !== null
         ]);
+
     }
+        
 
     #[Route('/avis/delete/{id}', name: 'avis_delete')]
     public function deleteAvis(EntityManagerInterface $entityManager, int $id)
@@ -70,17 +72,42 @@ class AvisController extends AbstractController
         ]);
                     
     }
+
+    #[Route('/avis/admin', name: 'admin_avis')]
+    public function adminAvis(AvisRepository $repo): Response
+    {
+        
+        $aviss = $repo->findAll();
+        
+        return $this->render('avis/indexAdmin.html.twig', [
+            'controller_name' => 'AvisController',
+            'aviss' => $aviss
+        ]);
+    }
     
 
     #[Route('/avis/{id}', name: 'avis_show')]
     public function show(AvisRepository $repo, $id): Response
     {
-        $avis = $repo->find($id);
-        return $this->render('avis/show.html.twig', [
-            'controller_name' => 'AvisController',
-            'avis' => $avis
-        ]);
+        if ($id) {
+            $avis = $repo->find($id);
+            if (!$avis) {
+                return $this->redirectToRoute('app_avis');
+            } else {
+                       return $this->render('avis/show.html.twig', [
+                        'controller_name' => 'AvisController',
+                        'avis' => $avis
+            ]);
+
+        }
+        } else {
+            return $this->redirectToRoute('app_avis');
+        }
+        
     }
+
+   
+
 
     
 }

@@ -33,7 +33,6 @@ class ReparationController extends AbstractController
         $form = $this->createForm(ReparationType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérons les données du véhicule créé dans le create form.
             $reparation = $form->getData();
             $manager->persist($reparation);
             $manager->flush();
@@ -89,7 +88,7 @@ class ReparationController extends AbstractController
             'reparations'=> $reparations
         ]);
     }
-
+    // Seul l'admin peut ajouter, modifier ou supprimer une réparation.
     #[Route('/reparation/admin', name: 'admin_reparation')]
     public function adminReparation(ReparationRepository $repo): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');

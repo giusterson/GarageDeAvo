@@ -17,6 +17,7 @@ use App\Entity\Demande;
 use App\Form\SearchFormType;
 use App\Repository\DemandeRepository;
 use App\Repository\UserRepository;
+
 class VehiculeController extends AbstractController
 {
     #[Route('/vehicule', name: 'app_vehicule')]
@@ -61,8 +62,8 @@ class VehiculeController extends AbstractController
             return new JsonResponse([
                 'content' => $this->renderView('vehicule/_vehicules.html.twig', ['vehicules' => $vehicules]),
                 'sorting' => $this->renderView('vehicule/_sorting.html.twig', ['vehicules' => $vehicules]),
-                'pagination' => $this->renderView('vehicule/_pagination.html.twig', ['vehicules' => $vehicules])
             ]);
+            
         }
         return $this->render('vehicule/indexUtilisateur.html.twig', [
             'controller_name' => 'VehiculeController',

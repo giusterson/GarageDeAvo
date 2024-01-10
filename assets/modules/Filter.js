@@ -70,9 +70,12 @@ export default class Filter {
         // Condition pour que la requête s'est bien déroulée 
         if (response.status >= 200 && response.status < 300) {
             const data = await response.json()
-            this.content.innerHTML = data.content
-            this.sorting.innerHTML = data.sorting
-            this.pagination.innerHTML = data.pagination
+            this.content.innerHTML = data.content;
+            this.sorting.innerHTML = data.sorting;
+            console.log('sorting', data.sorting);
+            if (this.pagination) {
+                this.pagination.innerHTML = data.pagination;
+            }
             history.replaceState({}, '', url)
         } else {
             console.error(response)

@@ -28,6 +28,9 @@ class Avis
     #[ORM\Column(type: Types::TEXT)]
     private ?string $contenuMessageAvis = null;
 
+    #[ORM\Column]
+    private ?bool $approved = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -84,6 +87,18 @@ class Avis
     public function setUser(?user $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function isApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(bool $approved): static
+    {
+        $this->approved = $approved;
 
         return $this;
     }
