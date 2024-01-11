@@ -91,7 +91,7 @@ class VehiculeController extends AbstractController
     #[Route('/vehicule/new', name: 'vehicule_create')]
     public function addVehicule(Request $request, ManagerRegistry $doctrine)
     {
-        // $this->denyAccessUnlessGranted('ROLE_EMPLOYEE');
+         $this->denyAccessUnlessGranted('ROLE_EMPLOYEE');
         $manager = $doctrine->getManager();
         $vehicule = new Vehicule();
         $form = $this->createForm(VehiculeType::class);

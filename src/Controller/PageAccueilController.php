@@ -36,7 +36,7 @@ class PageAccueilController extends AbstractController
             $avis->setUser($this->getUser());
             $manager->persist($avis);
             $manager->flush();
-            return $this->render('avis/show.html.twig', 
+            return $this->render('avis/show.html.twig',     
             ['avis' => $avis]);
         }
        return $this->render('page_accueil/index.html.twig', [

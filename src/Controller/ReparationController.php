@@ -36,7 +36,7 @@ class ReparationController extends AbstractController
             $reparation = $form->getData();
             $manager->persist($reparation);
             $manager->flush();
-            return $this->render('reparation/show.html.twig', 
+            return $this->render('reparation/show.html.twig',
             ['reparation' => $reparation]);
         }
         return $this->render('reparation/create.html.twig' , [

@@ -28,7 +28,7 @@ class EtatOuvertureGarageController extends AbstractController
 
     #[Route('/ouverture/edit/{id}', name: 'etat_ouverture_garage_edit')]
     public function editEtatOuvertureGarage(EtatOuvertureGarage $etatOuvertureGarage, Request $request, ManagerRegistry $doctrine, ReparationRepository $repo) {
-        // $this->denyAccessUnlessGranted('ROLE_EMPLOYEE');
+         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $manager = $doctrine->getManager();
         $etatOuverture = null;
         $reparations = $repo->findAll();
@@ -38,8 +38,7 @@ class EtatOuvertureGarageController extends AbstractController
             $etatOuvertureGarageData = $form->getData();
             $manager->persist($etatOuvertureGarageData);
             $manager->flush();
-            return $this->render('reparation/indexAdmin.html.twig', 
-            ['reparations' => $reparations]);
+            return $this->render('admin/index.html.twig');
         }
         return $this->render('etat_ouverture_garage/create.html.twig' , [
             'formOuverture' => $form->createView(),

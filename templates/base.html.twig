@@ -48,9 +48,16 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('vehicule_create') }}">Ajouter un véhicule </a>
             </li>
-             <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
-            </li>
+            {% if is_granted('ROLE_ADMIN') %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ path('app_admin') }}">Espace admin</a>
+              </li>
+            {% endif %}
+            {% if is_granted('ROLE_EMPLOYEE') %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ path('app_employe') }}">Espace employe</a>
+              </li>
+            {% endif %}
            
         </ul>
         <form class="d-flex">
