@@ -177,14 +177,14 @@ ul li{
                             <h4>{{ vehicule.prix }} €</h4>
                         </div>
                         <div class="ctas">
-                          <a href="#" class="btn secondary"> Contacter le propriétaire   </a>
+                          <a href="{{ path('contact_create_from_vehicule')}}" class="btn secondary"> Contacter le propriétaire   </a>
                           <div style="clear:both;"></div>
                         </div>
                         <div class="desc">
                           <p> Plaque d'immatriculation : {{vehicule.immatriculation}} </p>
-                          <p style="font-weight: bold;">Coordonnées :</p>
-                          <p>Nom : {{ vehicule.user.firstname }} {{ vehicule.user.lastname }} </p>
-                          <p>Mail : {{ vehicule.user.email }} </p>
+                          <p style="font-weight: bold;">Infos :</p>
+			                    <p> Année de mise en circulation : {{ vehicule.anneeMiseEnCirculation }} </p>
+			                    <p> Kilométrage : {{ vehicule.kms }} km </p>
                         </div>
                    </div> 
                 </div>

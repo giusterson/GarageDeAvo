@@ -1,5 +1,4 @@
-
-              <div class="vehicle-card">
+ <div class="vehicle-card">
                 <div class="details">      
                   <div class="thumb-gallery">
                     <img class="first" src="{{ vich_uploader_asset(vehicule, 'imageFile')}}">
@@ -12,16 +11,16 @@
                         </div>
                         <div class="ctas">
                           <a href="/vehicule/show/{{ vehicule.id }}" class="btn primary"> Détails</a>
-                          <a href="#" class="btn secondary"> Contacter  </a>
+
+                          {# {% set currentVehiculeService = setCurrentVehicule({{ vehicule }}) %} #}
+                          <a href="{{ path('contact_create_from_vehicule', {vehiculeLibelle: vehicule.libelle}) }}" class="btn secondary"> Contacter  </a>
                           <div style="clear:both;"></div>
                         </div>
                         <div class="desc">
-                          <p style="font-weight: bold;">Infos :</p>
-                          <p> Année de mise en circulation : {{ vehicule.anneeMiseEnCirculation }} </p>
-                          <p> Kilométrage : {{ vehicule.kms }} km </p>
+                          <p style="font-weight: bold;">Coordonnées :</p>
+                          <p>Nom : {{ vehicule.user.firstname }} {{ vehicule.user.lastname }} </p>
+                          <p>Mail : {{ vehicule.user.email }} </p>
                         </div>
                    </div> 
                 </div>
               </div>
-
-       

@@ -44,14 +44,14 @@
              <li class="nav-item">
                 <a class="nav-link" href="{{ path('demande_create') }}">Ajouter une demande</a>
             </li>
-            
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('vehicule_create') }}">Ajouter un véhicule </a>
+                <a class="nav-link" href="{{ path('contact_create') }}">Contact</a>
             </li>
+            
             {% if is_granted('ROLE_ADMIN') %}
-              <li class="nav-item">
-                  <a class="nav-link" href="{{ path('app_admin') }}">Espace admin</a>
-              </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_admin') }}">Espace admin</a>
+                </li>
             {% endif %}
             {% if is_granted('ROLE_EMPLOYEE') %}
               <li class="nav-item">

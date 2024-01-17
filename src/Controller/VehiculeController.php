@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Data\SearchDataTest;
 use Doctrine\Persistence\ManagerRegistry;
+use PhpParser\Node\Expr\Cast\String_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ use App\Entity\Demande;
 use App\Form\SearchFormType;
 use App\Repository\DemandeRepository;
 use App\Repository\UserRepository;
+use App\Service\CurrentVehiculeService;
 
 class VehiculeController extends AbstractController
 {
@@ -32,7 +34,7 @@ class VehiculeController extends AbstractController
     }
 
     #[Route('/vehicule/utilisateur', name: 'app_vehicule_utilisateur')]
-    public function indexUtilisateur(VehiculeRepository $vehiculeRepository, UserRepository $userRepository, Request $request): Response
+    public function indexUtilisateur(VehiculeRepository $vehiculeRepository, UserRepository $userRepository, Request $request, CurrentVehiculeService $currentVehiculeService): Response
     {
         // On affiche à l'utilisateur les véhicules seulement disponibles.
          $vehicules = $vehiculeRepository->findBy(
@@ -51,16 +53,19 @@ class VehiculeController extends AbstractController
         [$minPrice, $maxPrice] = $vehiculeRepository->findMinMaxPrice($data);
       /*   dump("minPrice= " . $minPrice);
         dump("maxPrice= " . $maxPrice); */
-        [$minKms, $maxKms] = $vehiculeRepository->findMinMaxKms($data);
+            [$minKms, $maxKms] = $vehiculeRepository->findMinMaxKms($data);
         [$minYear, $maxYear] = $vehiculeRepository->findMinMaxYear($data);
 
         $vehicules = $vehiculeRepository->findSearch($data);
         // dd($vehicules);
         // On récupère tous les users car certains possèdent des véhicules
         $users = $userRepository->findAll();
+       
+        $vehiculeLibelle ="";
         if ($request->get('ajax')) {
+            
             return new JsonResponse([
-                'content' => $this->renderView('vehicule/_vehicules.html.twig', ['vehicules' => $vehicules]),
+                'content' => $this->renderView('vehicule/_vehicules.html.twig', ['vehicules' => $vehicules, 'vehicule' => $currentVehiculeService->getCurrentVehicule(), 'getCurrentService' => $currentVehiculeService]),
                 'sorting' => $this->renderView('vehicule/_sorting.html.twig', ['vehicules' => $vehicules]),
             ]);
             
