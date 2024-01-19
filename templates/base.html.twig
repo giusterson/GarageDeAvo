@@ -17,6 +17,7 @@
                     <script src="/build/app.js" defer></script>
                     See note below about the "defer" attribute -->
             {% endblock %}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
             {# {{ encore_entry_link_tags('app') }}
             {{ encore_entry_script_tags('app') | replace('src=', 'defer src=') | raw}} #}     
@@ -45,7 +46,7 @@
                 <a class="nav-link" href="{{ path('demande_create') }}">Ajouter une demande</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('contact_create') }}">Contact</a>
+                <a class="nav-link" href="{{ path('contact_create_from_employe') }}">Contact</a>
             </li>
             
             {% if is_granted('ROLE_ADMIN') %}

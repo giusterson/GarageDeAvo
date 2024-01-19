@@ -27,7 +27,7 @@ class VehiculeType extends AbstractType
 
             ->add('immatriculation')
             ->add('prix', MoneyType::class, [
-                'label' => 'prix',
+                'label' => 'Prix',
                 'constraints' => [
                   new Positive(
                     message: 'Le prix ne peut être négatif'
@@ -40,6 +40,8 @@ class VehiculeType extends AbstractType
             ->add('user', EntityType::class, [
                 'class'=> User::class,
                 'choice_label' => 'email',
+                'label' => 'Propriétaire du véhicule'
+
             ])
         ;
     }

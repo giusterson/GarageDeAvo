@@ -55,6 +55,31 @@ class ContactController extends AbstractController
        
     }
 
+    #[Route('/contact/new/fromEmploye', name: 'contact_create_from_employe')]
+    public function addContactFromEmploye(Request $request, ManagerRegistry $doctrine)
+    {
+        $manager = $doctrine->getManager();
+        $contact = new Contact();
+        $form = $this->createForm(ContactType::class);
+      
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Récupérons les données du véhicule créé dans le create form.
+            $contact = $form->getData();
+            $manager->persist($contact);
+            $manager->flush();
+            return $this->render('contact/show.html.twig', 
+            ['contact' => $contact]);
+        }
+        return $this->render('contact/create.html.twig' , [
+            'formContact' => $form->createView(),
+            'isEditMode' => false
+            
+
+        ]);
+       
+    }
+
     #[Route('/contact/new/fromVehicule/{vehiculeLibelle}', name: 'contact_create_from_vehicule')]
     public function addContactFromVehicule(Request $request, ManagerRegistry $doctrine, CurrentVehiculeService $currentVehiculeService, String $vehiculeLibelle)
     {
@@ -70,7 +95,6 @@ class ContactController extends AbstractController
             // Récupérons les données du véhicule créé dans le create form.
             $contact = $form->getData();
             $contact->setUser($this->getUser());
-           // $titre = $currentVehiculeService->getCurrentVehicule()->getLibelle();
             $titre = $vehiculeLibelle;
             $contact->setTitre($titre);
             $manager->persist($contact);

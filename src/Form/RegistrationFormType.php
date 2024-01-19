@@ -62,7 +62,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
-                'label'=> 'En m\'inscrivant à ce site, j\'accepte les conditions générales'
+                'label'=> 'En m\'inscrivant à ce site, j\'accepte les conditions générales '
                 
             ])
             ->add('plainPassword', PasswordType::class, [
