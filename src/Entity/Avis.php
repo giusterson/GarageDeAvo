@@ -6,6 +6,8 @@ use App\Repository\AvisRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
 class Avis
@@ -20,12 +22,16 @@ class Avis
     
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?int $note = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Regex('/^\w+/')]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Regex('/^\w+/')]
+
     private ?string $contenuMessageAvis = null;
 
     #[ORM\Column]

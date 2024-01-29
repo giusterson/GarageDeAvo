@@ -61,7 +61,7 @@ class ContactController extends AbstractController
         $manager = $doctrine->getManager();
         $contact = new Contact();
         $form = $this->createForm(ContactType::class);
-      
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupérons les données du véhicule créé dans le create form.
@@ -81,7 +81,7 @@ class ContactController extends AbstractController
     }
 
     #[Route('/contact/new/fromVehicule/{vehiculeLibelle}', name: 'contact_create_from_vehicule')]
-    public function addContactFromVehicule(Request $request, ManagerRegistry $doctrine, CurrentVehiculeService $currentVehiculeService, String $vehiculeLibelle)
+    public function addContactFromVehicule(Request $request, ManagerRegistry $doctrine, String $vehiculeLibelle)
     {
         $manager = $doctrine->getManager();
         $contact = new Contact();
