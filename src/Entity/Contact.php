@@ -21,9 +21,13 @@ class Contact
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Regex('/^\w+/')]
+
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Regex('/^\w+/')]
+
     private ?string $message = null;
 
     public function getId(): ?int

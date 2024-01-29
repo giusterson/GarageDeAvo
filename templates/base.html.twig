@@ -42,9 +42,6 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_vehicule_utilisateur') }}">Vente</a>
             </li>
-             <li class="nav-item">
-                <a class="nav-link" href="{{ path('demande_create') }}">Ajouter une demande</a>
-            </li>
             {% if is_granted('ROLE_USER') %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('contact_create') }}">Contact</a>
