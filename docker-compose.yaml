@@ -6,8 +6,10 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: totoZanahari72
             MYSQL_DATABASE: garageVincentParrot
+        command: --init-file /var/www/config/init.sql
         volumes:
             - my-db:/var/lib/mysql
+            - ./init.sql:/var/www/config/init.sql
         ports:
             # To allow the host machine to access the ports below, modify the lines below.
             # For example, to allow the host to connect to port 3306 on the container, you would change
