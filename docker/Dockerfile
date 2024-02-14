@@ -13,9 +13,9 @@ RUN apt update && apt install -yqq nodejs npm
 
 COPY . /var/www/
 
-RUN chmod a+rwx -R /var/www/var
+RUN chmod a+rwx -R /var/www
 COPY ./docker/apache.conf /etc/apache2/sites-available/000-default.conf
-
+ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN cd /var/www  && composer install && npm install --force && npm run build
 
 WORKDIR /var/www/
