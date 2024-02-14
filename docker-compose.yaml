@@ -27,7 +27,7 @@ services:
         volumes:
             - .:/srv/app/
         environment:
-            DATABASE_URL: mysql://loli:Zanahari72@database:3306/garageVincentParrot?serverVersion=5.7
+            DATABASE_URL: mysql://root:totoZanahari72@database:3306/garageVincentParrot?serverVersion=5.7
         image: garage-croni
      
 volumes:
