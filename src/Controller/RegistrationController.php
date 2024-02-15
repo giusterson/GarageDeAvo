@@ -85,4 +85,40 @@ class RegistrationController extends AbstractController
     }
 
     
+    #[Route('/inscription/admin', name: 'app_register_admin')]
+    public function registerAdmin(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UsersAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    {
+        // On donne l'accès à cette fonctionnalité à l'administrateur uniquement
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $administrateur = new User();
+        $form = $this->createForm(RegistrationFormType::class, $administrateur);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $administrateur->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $administrateur,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            // On assigne le rôle d''administrateur à l'utilisateur
+            $administrateur->setRoles(['ROLE_ADMIN']);
+            $entityManager->persist($administrateur);
+            $entityManager->flush();
+
+            return $userAuthenticator->authenticateUser(
+                $administrateur,
+                $authenticator,
+                $request
+            );
+        }
+
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),
+            'isAdminMode' => true
+        ]);
+    }
+
 }

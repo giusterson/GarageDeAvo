@@ -51,9 +51,7 @@ class VehiculeController extends AbstractController
         $form = $this->createForm(SearchFormType::class, $data); 
         $form->handleRequest($request);
         [$minPrice, $maxPrice] = $vehiculeRepository->findMinMaxPrice($data);
-      /*   dump("minPrice= " . $minPrice);
-        dump("maxPrice= " . $maxPrice); */
-            [$minKms, $maxKms] = $vehiculeRepository->findMinMaxKms($data);
+        [$minKms, $maxKms] = $vehiculeRepository->findMinMaxKms($data);
         [$minYear, $maxYear] = $vehiculeRepository->findMinMaxYear($data);
 
         $vehicules = $vehiculeRepository->findSearch($data);

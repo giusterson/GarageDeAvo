@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReparationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReparationRepository::class)]
 class Reparation
@@ -15,12 +16,15 @@ class Reparation
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Regex('/[0-9]{4}[A-Z]{2}/')]
     private ?string $code = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?int $prixMoyen = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Regex('/^\w+/')]
     private ?string $nomReparation = null;
 
     public function getId(): ?int
